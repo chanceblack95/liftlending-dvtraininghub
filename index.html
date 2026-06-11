@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lift Lending — DV Training Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0f2740;--ink-soft:#27425f;--paper:#f6f1e7;--paper-2:#fbf8f1;--card:#fff;
+    --brass:#b07d2a;--brass-2:#caa04b;--line:#e2d8c6;
+    --green:#2f6b4f;--green-bg:#e7f1ea;--red:#9a3528;--red-bg:#f6e6e2;--amber:#9c6a16;--amber-bg:#f7eeda;
+    --shadow:0 14px 40px -22px rgba(15,39,64,.55);
+    --accent:var(--brass);--accent2:var(--brass-2);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Hanken Grotesk',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(circle at 12% -5%,rgba(176,125,42,.07),transparent 42%),radial-gradient(circle at 90% 0,rgba(15,39,64,.06),transparent 38%);}
+  header{background:var(--ink);color:var(--paper-2);padding:22px 28px 0;position:relative;overflow:hidden}
+  header::after{content:"";position:absolute;inset:auto 0 0 0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent));transition:.4s}
+  .brandrow{display:flex;align-items:center;gap:15px;max-width:1100px;margin:0 auto;flex-wrap:wrap}
+  .seal{width:48px;height:48px;border-radius:11px;flex:0 0 auto;background:linear-gradient(145deg,var(--accent2),var(--accent));display:grid;place-items:center;color:var(--ink);font-family:'Fraunces',serif;font-weight:700;font-size:1.15rem;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25);transition:.4s}
+  .brand h1{font-family:'Fraunces',serif;font-weight:600;font-size:1.4rem;line-height:1.1}
+  .brand p{font-size:.8rem;color:#b9c6d4;letter-spacing:.3px}
+  .bsel{display:flex;gap:7px;margin-left:auto;background:rgba(255,255,255,.06);padding:5px;border-radius:12px}
+  .bsel button{font-family:inherit;font-weight:600;font-size:.82rem;border:0;background:transparent;color:#9fb0c1;padding:8px 14px;border-radius:8px;cursor:pointer;transition:.2s;white-space:nowrap}
+  .bsel button:hover{color:#fff}
+  .bsel button.on{background:var(--accent);color:var(--ink)}
+  nav{max-width:1100px;margin:16px auto 0;display:flex;gap:3px;overflow-x:auto;padding-bottom:2px}
+  nav::-webkit-scrollbar{height:0}
+  .tab{font-family:inherit;background:transparent;border:0;color:#9fb0c1;cursor:pointer;padding:11px 14px;font-size:.85rem;font-weight:600;white-space:nowrap;border-bottom:2.5px solid transparent;transition:.18s}
+  .tab:hover{color:var(--paper-2)}
+  .tab.active{color:var(--accent2);border-bottom-color:var(--accent2)}
+  main{max-width:1100px;margin:0 auto;padding:28px 22px 70px}
+  .eyebrow{font-size:.72rem;letter-spacing:1.6px;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:8px}
+  .lead{font-family:'Fraunces',serif;font-size:1.8rem;font-weight:600;line-height:1.15;margin-bottom:6px}
+  .sub{color:var(--ink-soft);max-width:64ch;margin-bottom:24px;font-size:.96rem}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin-bottom:16px;box-shadow:var(--shadow)}
+  .card h3{font-family:'Fraunces',serif;font-size:1.18rem;font-weight:600;margin-bottom:11px;display:flex;align-items:center;gap:10px}
+  .card h3 .n{width:25px;height:25px;border-radius:7px;background:var(--ink);color:var(--paper-2);display:grid;place-items:center;font-size:.8rem;font-weight:700;flex:0 0 auto}
+  .card h4{font-size:.92rem;font-weight:700;margin:13px 0 5px;color:var(--ink-soft)}
+  p.body{margin-bottom:9px;font-size:.95rem}
+  ul.clean{list-style:none;display:flex;flex-direction:column;gap:6px;margin:5px 0}
+  ul.clean li{padding-left:21px;position:relative;font-size:.94rem}
+  ul.clean li::before{content:"";position:absolute;left:2px;top:9px;width:7px;height:7px;border-radius:50%;background:var(--accent)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:780px){.grid2{grid-template-columns:1fr}.bsel{margin:12px 0 0;width:100%;justify-content:space-between}.lead{font-size:1.5rem}}
+  .pill{display:inline-block;font-size:.74rem;font-weight:700;padding:3px 10px;border-radius:999px;margin:0 5px 5px 0}
+  .pill.ok{background:var(--green-bg);color:var(--green)}.pill.no{background:var(--red-bg);color:var(--red)}.pill.warn{background:var(--amber-bg);color:var(--amber)}
+  .note{border-radius:13px;padding:14px 16px;margin:13px 0;font-size:.91rem;border:1px solid}
+  .note.ok{background:var(--green-bg);border-color:#bcd9c8;color:#1f4f3a}
+  .note.no{background:var(--red-bg);border-color:#e6c3bb;color:#7a2a20}
+  .note.warn{background:var(--amber-bg);border-color:#e6d3a6;color:#7a531a}
+  .note .h{display:block;font-weight:700;margin-bottom:3px;font-family:'Fraunces',serif}
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:20px}
+  @media(max-width:780px){.metrics{grid-template-columns:1fr 1fr}}
+  .metric{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:14px 15px;box-shadow:var(--shadow)}
+  .metric .v{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:600;color:var(--accent)}
+  .metric .k{font-size:.77rem;color:var(--ink-soft)}
+  .step{border-left:3px solid var(--line);padding:2px 0 2px 17px;margin:0 0 15px}
+  .step.key{border-left-color:var(--accent)}
+  .step .lbl{font-size:.73rem;letter-spacing:1px;text-transform:uppercase;font-weight:700;color:var(--accent)}
+  .step .say{font-style:italic;margin:5px 0;font-size:.96rem}
+  .step .coach{font-size:.84rem;color:var(--ink-soft)}
+  table.sched{width:100%;border-collapse:collapse;font-size:.92rem;margin:6px 0}
+  table.sched td,table.sched th{border:1px solid var(--line);padding:8px 12px;text-align:left}
+  table.sched th{background:var(--paper-2);font-weight:700}
+  .qa{counter-reset:qn;list-style:none}
+  .qa li{background:var(--paper-2);border:1px solid var(--line);border-radius:10px;padding:11px 14px 11px 42px;margin-bottom:8px;position:relative;font-size:.92rem}
+  .qa li::before{counter-increment:qn;content:counter(qn);position:absolute;left:12px;top:11px;width:20px;height:20px;border-radius:6px;background:var(--ink);color:var(--paper-2);display:grid;place-items:center;font-size:.72rem;font-weight:700}
+  .qa li .ans{float:right;font-weight:700;font-size:.74rem;padding:2px 8px;border-radius:999px;margin-left:8px}
+  .qa li .ans.y{background:var(--green-bg);color:var(--green)}.qa li .ans.n{background:var(--red-bg);color:var(--red)}
+  #chat{display:flex;flex-direction:column;height:470px;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+  #log{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:13px}
+  .msg{max-width:84%;padding:11px 14px;border-radius:14px;font-size:.93rem;line-height:1.5;white-space:pre-wrap}
+  .msg.bot{background:var(--paper-2);border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:4px}
+  .msg.me{background:var(--ink);color:var(--paper-2);align-self:flex-end;border-bottom-right-radius:4px}
+  .msg.bot b{color:var(--accent)}
+  .quickrow{display:flex;gap:7px;flex-wrap:wrap;padding:0 16px 11px}
+  .quick{font-size:.77rem;border:1px solid var(--line);background:var(--paper-2);border-radius:999px;padding:6px 11px;cursor:pointer;color:var(--ink-soft)}
+  .quick:hover{background:#efe7d8;color:var(--ink)}
+  .inputrow{display:flex;gap:8px;border-top:1px solid var(--line);padding:12px 13px;background:var(--paper-2)}
+  #q{flex:1;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-family:inherit;font-size:.93rem;resize:none;background:#fff;color:var(--ink)}
+  #q:focus{outline:2px solid var(--accent2)}
+  #send{background:var(--ink);color:var(--paper-2);border:0;border-radius:10px;padding:0 17px;font-weight:700;cursor:pointer;font-family:inherit}
+  #send:disabled{opacity:.5}
+  .typing{font-size:.84rem;color:var(--ink-soft);font-style:italic}
+  .coachcfg{font-size:.81rem;color:var(--ink-soft);background:var(--amber-bg);border:1px solid #e6d3a6;border-radius:11px;padding:11px 14px;margin-bottom:13px}
+  .coachcfg code{background:#fff;border:1px solid var(--line);border-radius:5px;padding:1px 6px}
+  footer{text-align:center;font-size:.77rem;color:var(--ink-soft);padding:22px;border-top:1px solid var(--line)}
+  .rewritebadge{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.4px;background:var(--green-bg);color:var(--green);padding:2px 9px;border-radius:999px;margin-left:8px;vertical-align:middle}
+</style>
+</head>
+<body>
+<header>
+  <div class="brandrow">
+    <div class="seal" id="seal">CS</div>
+    <div class="brand">
+      <h1>Lift Lending — DV Training Hub</h1>
+      <p id="brandsub">Debt Validation Team · Select your backend →</p>
+    </div>
+    <div class="bsel" id="bsel">
+      <button data-b="cs" class="on">Consumer Shield</button>
+      <button data-b="mls">Momen Legal</button>
+      <button data-b="respro">ResPro</button>
+    </div>
+  </div>
+  <nav id="nav"></nav>
+</header>
+
+<main id="main"></main>
+
+<footer>
+  Lift Lending — DV Training Hub · Internal use only. Pitch language reflects honest, no-guarantee positioning: outcomes on the validation/invalidation side are never guaranteed, and required risk disclosures are mandatory.
+</footer>
+
+<script>
+/* =========================================================
+   COACH CONFIG — point at your existing Cloudflare Worker
+   ========================================================= */
+const PROXY_ENDPOINT = "https://liftlending-proxy.chanceblack95.workers.dev";
+const MODEL = "claude-sonnet-4-5";
+
+/* =========================================================
+   SHARED COMPLIANCE GUARDRAILS (apply to every backend)
+   ========================================================= */
+const GUARDRAILS = `NON-NEGOTIABLE COMPLIANCE RULES — enforce in every answer and correct the rep immediately if they break them:
+- NEVER guarantee that any debt will be removed, invalidated, eliminated, or wiped from a credit report. The validation/invalidation process can CHALLENGE debts and debts CAN come off when a collector fails to validate, but outcomes are never guaranteed on any specific account.
+- NEVER promise a specific credit score or "back in the 700s." A credit-builder tradeline that genuinely reports may be described accurately, but it is not a promise of any score.
+- NEVER coach a rep to downplay or rush a disclosure (e.g. "make it sound like nothing"). Read disclosures plainly.
+- ALWAYS require the rep to disclose the real risks: credit will likely drop, creditors may keep calling, creditors may sue, results take time, the program does not pay creditors, and possible tax (1099-C) consequences.
+- NO pressure tactics, "build pain," or "never let them off the phone." If a client isn't comfortable or can't afford it, letting them go is the right call.
+If a rep practices any guaranteed-removal, guaranteed-score, or downplay language, STOP them and give the compliant rewrite.`;
+
+/* =========================================================
+   BACKEND CONTENT
+   ========================================================= */
+const B = {
+
+/* ---------------- CONSUMER SHIELD ---------------- */
+cs:{
+ name:"Consumer Shield", seal:"CS", sub:"Consumer Shield · Updated 2026",
+ accent:"#b07d2a", accent2:"#caa04b",
+ coachfacts:`BACKEND: Consumer Shield (CRM: DPP, credit pull via Xactus360). A 4-service program: (1) debt-invalidation process, (2) a credit-builder tradeline reported through Consolidation Capital, (3) bill-reduction service, (4) legal protection from creditor harassment. Min debt $5,000, min payment $250. Term 24mo under $8,800 / 36mo over. The invalidation side has NO guaranteed outcome. The tradeline genuinely reports monthly — describe it accurately, not as a score promise. Do not name "Consumer Shield" before the credit pull. Genie QA bot 507-690-3245, contract # 222222222.`,
+ tabs:{
+  overview:{label:"Overview", html:`
+   <div class="eyebrow">Start Here</div>
+   <div class="lead">What Consumer Shield is — accurately</div>
+   <p class="sub">Consumer Shield bundles four services. Reps must describe each one truthfully — especially keeping the credit-builder tradeline (which is guaranteed to report) separate from the invalidation process (whose outcome is not).</p>
+   <div class="metrics">
+     <div class="metric"><div class="v">$5,000</div><div class="k">Min. enrolled debt</div></div>
+     <div class="metric"><div class="v">$250</div><div class="k">Min. monthly payment</div></div>
+     <div class="metric"><div class="v">24 / 36</div><div class="k">Months (under/over $8,800)</div></div>
+     <div class="metric"><div class="v">4</div><div class="k">Bundled services</div></div>
+   </div>
+   <div class="grid2">
+     <div class="card"><h3>The four services</h3>
+       <ul class="clean">
+         <li><b>Invalidation process</b> — challenges the validity of enrolled debts using the FDCPA / FCRA / TILA. <b>Outcome is not guaranteed</b> on any account.</li>
+         <li><b>Credit-builder tradeline</b> — the monthly payment reports to the bureaus as an on-time positive tradeline through Consolidation Capital. This part <i>does</i> report — but it is not a promise of a specific score.</li>
+         <li><b>Bill-reduction service</b> — may reduce utilities, phone, or car insurance.</li>
+         <li><b>Legal protection</b> — protection from creditor harassment / collection activity.</li>
+       </ul>
+     </div>
+     <div class="card"><h3>What you may never say</h3>
+       <span class="pill no">"These debts will be eliminated / wiped off"</span>
+       <span class="pill no">"Your credit will be back in the 700s"</span>
+       <span class="pill no">"Your score will not be affected"</span>
+       <span class="pill no">"We make payments to your creditors"</span>
+       <span class="pill no">"Your cards will not be closed"</span>
+       <p class="body" style="margin-top:10px">The invalidation result is a goal, not a guarantee — and the Genie QA call has the client confirm exactly that. Your pitch must match it.</p>
+     </div>
+   </div>`},
+
+  eligibility:{label:"Eligibility & Debt", html:`
+   <div class="eyebrow">Qualification</div>
+   <div class="lead">Eligibility, payment schedule & debt rules</div>
+   <p class="sub">Minimum debt $5,000 · minimum payment $250. Term is 24 months under $8,800 enrolled, 36 months over.</p>
+   <div class="card"><h3>Payment schedule</h3>
+     <table class="sched"><tr><th>Total enrolled debt</th><th>Monthly payment</th></tr>
+       <tr><td>$5,000 – $9,999</td><td>$250 / mo</td></tr>
+       <tr><td>$10,000 – $14,999</td><td>$270 / mo</td></tr>
+       <tr><td>$15,000 – $19,999</td><td>$320 / mo</td></tr>
+       <tr><td>$20,000 – $24,999</td><td>$370 / mo</td></tr>
+       <tr><td>$25,000 – $29,999</td><td>$420 / mo</td></tr>
+       <tr><td>$30,000 – $49,999</td><td>$520 / mo</td></tr>
+       <tr><td>$50,000+</td><td>$620 / mo</td></tr>
+     </table></div>
+   <div class="grid2">
+     <div class="card"><h3>Accounts that CAN be enrolled</h3>
+       <ul class="clean">
+         <li>Unsecured credit cards, personal loans, lines of credit (not credit unions)</li>
+         <li>Medical bills, cell phone, utility bills, payday loans, peer-to-peer loans</li>
+         <li>Apartment back rent (collections only), auto loan after repo &amp; sold</li>
+         <li>Business credit if dissolved; USAA (no other secured debt); tribal loans (tribal doc signing required)</li>
+       </ul></div>
+     <div class="card"><h3>Accounts that CANNOT be enrolled</h3>
+       <ul class="clean">
+         <li>Timeshares, mortgages, federal student loans, IRS tax debt</li>
+         <li>Accounts with judgments, cross-collateralized accounts, credit union loans</li>
+         <li>Furniture-store direct financing, loans from individuals, installment sales contracts</li>
+         <li>Military / AFES accounts</li>
+       </ul></div>
+   </div>
+   <div class="note no"><span class="h">Non-sell states — do NOT enroll</span> CO · PA · NJ · OR · NC · PR · CT · WA</div>
+   <div class="card"><h3>Unacceptable banks (05/13/2026)</h3>
+     <p class="body">If a client banks with any of these, they must open an account at an acceptable bank before enrolling:</p>
+     <span class="pill no">The Bancorp Bank</span><span class="pill no">Chime / Stride</span><span class="pill no">CashApp / Sutton</span><span class="pill no">Cross River</span><span class="pill no">Comerica / Direct Express</span><span class="pill no">Go2Bank / Green Dot</span><span class="pill no">One Finance</span><span class="pill no">Pathward</span><span class="pill no">SoFi</span><span class="pill no">Varo</span>
+   </div>`},
+
+  script:{label:"CS Script", html:`
+   <div class="eyebrow">Approved Framework <span class="rewritebadge">Compliance-rewritten</span></div>
+   <div class="lead">Consumer Shield enrollment script</div>
+   <p class="sub">Your style is welcome, but every required element and every highlighted disclosure must be covered. Guaranteed-outcome and downplay language has been removed — do not add it back.</p>
+
+   <div class="card"><h3><span class="n">1</span>Opening &amp; income qualification</h3>
+     <div class="step"><div class="say">"Hi, this is [your name] with [campaign name] on a recorded line. Who do I have the pleasure of speaking with?"</div>
+       <div class="coach">Employed or fixed income? · Total monthly income after tax? · Dealing with any debts — cards, loans, medical, payday? · Ballpark total owed? (must be over $5,000)</div></div></div>
+
+   <div class="card"><h3><span class="n">2</span>Confirm contact info</h3>
+     <div class="step"><div class="coach">Best callback number · spelling of full name · best email · mailing address (no P.O. boxes). Verify if already on file.</div></div></div>
+
+   <div class="card"><h3><span class="n">3</span>Credit-pull authorization</h3>
+     <div class="note no" style="margin-top:0"><span class="h">Read it straight — no downplaying</span> Do not make this "sound like nothing." State it plainly and get a real, informed yes.</div>
+     <div class="step key"><div class="say">"The next step is your verbal authorization for a soft credit check. This is a soft pull and will not affect your credit score. Do I have your authorization to proceed?"</div>
+       <div class="coach">Then DOB and SSN (verify if on file). "I'll place you on a brief hold and submit this to underwriting." Pull credit in DPP via Xactus360. Do NOT mention Consumer Shield before the pull.</div></div></div>
+
+   <div class="card"><h3><span class="n">4</span>Come off hold · understand the situation</h3>
+     <div class="step"><div class="coach">"I'm looking at your report and I see what you're up against." Ask what led to the hardship — loss of income, medical, unexpected expenses. Empathize honestly. Note the high-interest balances and how minimum payments mostly cover interest.</div></div></div>
+
+   <div class="card"><h3><span class="n">5</span>Present the program — accurately</h3>
+     <div class="step"><div class="lbl">The plan</div>
+       <div class="say">"Based on your situation I can enroll you with Consumer Shield. You currently owe $[eligible debt]. We'd set you up on a single monthly payment of $[amount] over [term] months."</div></div>
+     <div class="step key"><div class="lbl">How it works — say it this way</div>
+       <div class="say">"The program uses federal consumer-protection laws — the FDCPA, FCRA, and TILA — to challenge and demand validation of these debts. When a debt can't be validated, it can be removed. The goal is to resolve or remove them, but I want to be straight with you: results aren't guaranteed on any specific account."</div></div>
+     <div class="step key"><div class="lbl">The required risk disclosure</div>
+       <div class="say">"To make this work you'd redirect those payments into the program instead of paying the creditors directly. That means those accounts will go delinquent, your credit will likely drop before it recovers, and creditors may keep contacting you or could pursue collection or legal action."</div></div>
+     <div class="step"><div class="lbl">The tradeline (this one is real)</div>
+       <div class="say">"Your monthly program payment is reported to the bureaus each month as an on-time positive tradeline through Consolidation Capital, which helps you build positive payment history."</div>
+       <div class="coach">Accurate — it reports. Do NOT pair it with a promised score number.</div></div>
+     <div class="step"><div class="lbl">Other services</div>
+       <div class="coach">Optional bill-reduction service (utilities/phone/insurance) and legal protection from creditor harassment.</div></div></div>
+
+   <div class="card"><h3><span class="n">6</span>Three mandatory compliance points</h3>
+     <ul class="clean">
+       <li><b>Credit impact:</b> "Your credit may get worse before it gets better."</li>
+       <li><b>Not a loan:</b> "Consumer Shield is not debt consolidation and is not offering a loan."</li>
+       <li><b>Accounts:</b> "You'll stop paying enrolled creditors directly and stop using enrolled accounts as of today."</li>
+     </ul></div>
+
+   <div class="card"><h3><span class="n">7</span>Monthly budget</h3>
+     <div class="step"><div class="coach">Run a real budget so the payment is survivable — rent, utilities, phone, food, car, insurance. "The last thing I want is to put you on a payment you can't afford."</div></div></div>
+
+   <div class="card"><h3><span class="n">8–10</span>Payment date · banking · recap</h3>
+     <div class="step"><div class="coach">No money upfront today. Set first payment ~1 week out (≥5 business days). Checking or savings; confirm name + billing address; bank, routing, account (repeat back). Recap term, amounts, and draft day before docs.</div></div></div>
+
+   <div class="card"><h3><span class="n">11</span>E-sign documents</h3>
+     <div class="step"><div class="coach">Send via text/email. Explain the authorization to communicate with creditors/bureaus. Send order: (1) National Lit Consumer Shield Encore Rev0226 · (2) RAM Client ACH Agreement 10.9.25 · (3) Consumer Shield ATC Template Rev 925-2.</div></div></div>
+
+   <div class="card"><h3><span class="n">12</span>Genie QA call</h3>
+     <div class="step"><div class="coach">Review all questions with the client first, then 3-way to the automated system. Stay on the line; note time &amp; date. QA bot 507-690-3245 · contract # 222222222. After completion → status file "Pending Underwriting Review."</div></div></div>`},
+
+  objections:{label:"Objections", html:`
+   <div class="eyebrow">Rebuttals <span class="rewritebadge">Compliance-rewritten</span></div>
+   <div class="lead">Objections — handled honestly</div>
+   <p class="sub">Address the real concern. Guarantee language and "build pain / never let them off the phone" have been removed. If a client isn't comfortable or can't afford it, letting them go beats a cancel or chargeback.</p>
+
+   <div class="card"><h3>"I don't want my credit score affected."</h3>
+     <p class="body">"I'll be honest with you — your credit will likely take a dip while accounts go delinquent. As debts are challenged and resolved, that can improve, and your monthly program payment reports as a positive tradeline along the way. But I'm not going to promise you a specific score — what I can tell you is the goal is to get you to a healthier position over time."</p></div>
+
+   <div class="card"><h3>"I've done something like this before and it hurt me."</h3>
+     <p class="body">"That may have been traditional debt settlement, where balances are negotiated down. This is different — we challenge the validity of the debts under federal law, and when a collector can't validate, the debt can come off. I can't promise that on every account, but that's the process."</p></div>
+
+   <div class="card"><h3>"How do I know this isn't a scam?"</h3>
+     <p class="body">"Fair question. We're on a recorded line, all calls are recorded for compliance. We work in 45 states. I'm happy to give you our website to do your own due diligence, and you'll get a client dashboard to track everything. We're a licensed company, in business over 10 years, A+ with the BBB." <i>(State only what's true and verifiable.)</i></p></div>
+
+   <div class="card"><h3>"I want to think it over."</h3>
+     <p class="body">Find the real concern and address it. A same-day or next-day callback is fine. Don't manufacture urgency or pressure — give them accurate information and let them decide.</p></div>
+
+   <div class="card"><h3>"How do you know creditors will work with you?"</h3>
+     <p class="body">"We don't need the creditors to cooperate — the process works through the credit bureaus and the validation demands under federal law."</p></div>
+
+   <div class="note ok"><span class="h">Mindset</span> Know your material cold and answer with confidence; if you're unsure, say you'll confirm with a supervisor rather than guess. And it's always better to let a client go than to push someone into a program they don't understand.</div>`},
+
+  qa:{label:"CS Genie Call", html:`
+   <div class="eyebrow">Compliance Recording</div>
+   <div class="lead">Genie QA call</div>
+   <p class="sub">Review every question with the client before transferring. Genie bot 507-690-3245 · contract # 222222222. These confirmations are what make the disclosures real — your pitch must already match them.</p>
+   <div class="card"><h3>Bot intro</h3>
+     <div class="step"><div class="coach">"Mariah Williams from Consumer Shield, recorded line." Agent states name + company. Client confirms: not on speakerphone, name, callback number, last 4 SSN, DOB, and that payments appear as RAM Debit/Bank/Payment via Reliant. Then strict YES/NO questions begin.</div></div></div>
+   <div class="card"><h3>Compliance questions — strict YES / NO</h3>
+     <ul class="qa">
+       <li><span class="ans n">NO</span>Enrolling any accounts where fewer than 3 payments have been made?</li>
+       <li><span class="ans y">YES</span>Understand Consumer Shield is not a debt settlement company and not a credit repair organization?</li>
+       <li><span class="ans n">NO</span>Anyone else financially responsible / any cosigners?</li>
+       <li><span class="ans y">YES</span>Aware on-time payments report through Consolidation Capital as a secure tradeline but <b>results are not guaranteed</b>?</li>
+       <li><span class="ans y">YES</span>Understand Consumer Shield does not make payments to your creditors?</li>
+       <li><span class="ans y">YES</span>Aware we cannot stop automatic payments you've set up?</li>
+       <li><span class="ans y">YES</span>Understand your credit may get worse before it gets better?</li>
+       <li><span class="ans y">YES</span>Understand enrolled debts can't be secured, government, or under judgment?</li>
+       <li><span class="ans n">NO</span>Need to keep using any enrolled cards / lines of credit?</li>
+       <li><span class="ans y">YES</span>Aware we are not debt consolidation and not offering a loan?</li>
+       <li><span class="ans n">NO</span>Been sued / received legal documents for enrolled creditors?</li>
+       <li><span class="ans n">NO</span>Any property (car/house) tied to enrolled creditors?</li>
+       <li><span class="ans n">NO</span>Bank account at the same institution where enrolling a card/loan?</li>
+       <li><span class="ans n">NO</span>Any business accounts or tied to a business you own?</li>
+     </ul></div>`},
+
+  compliance:{label:"Compliance", html:`
+   <div class="eyebrow">Conduct &amp; Hard Rules</div>
+   <div class="lead">Auto-fails, never-say & termination</div>
+   <div class="grid2">
+     <div class="card"><h3>Auto-fails — pre credit check</h3>
+       <ul class="clean"><li>Not notifying the client the call is recorded</li><li>Pulling credit without verbal authorization</li><li>Discussing any program / back-end partner before the pull</li><li>Giving the wrong campaign name</li></ul></div>
+     <div class="card"><h3>Auto-fails — during pitch</h3>
+       <ul class="clean"><li>Giving wrong back-end partner info</li><li>Skipping any of the 3 compliance points</li><li>Falsifying the monthly budget in the CRM</li></ul></div>
+   </div>
+   <div class="note no"><span class="h">Things you must NEVER say</span> "Your credit score will not be affected" · "Your cards will not be closed" · "This won't affect a mortgage/refi/auto loan" · "We issue payments to your creditors." No legal or tax advice; never say this will "pay" their accounts off. <b>And never that debts are guaranteed to be eliminated.</b></div>
+   <div class="card"><h3>Grounds for termination</h3>
+     <ul class="clean"><li>Giving out the office address · calling/texting from a personal phone</li><li>Contacting clients outside 8:00 AM – 9:00 PM local</li><li>Storing client PII beyond name/debt/payment dates</li><li>Signing on a client's behalf · pulling credit without permission or after denial</li><li>Back-end partner info before the pull · multiple DNC violations · drop-out rate staying above 20%</li></ul></div>`},
+ }
+},
+
+/* ---------------- MOMEN LEGAL (MLS) ---------------- */
+mls:{
+ name:"Momen Legal Services", seal:"ML", sub:"Momen Legal (MLS) · Forth (DPP) · Updated 05/15/2026",
+ accent:"#2f5d7a", accent2:"#5a8fb0",
+ coachfacts:`BACKEND: Momen Legal Services (MLS). CRM: Forth (DPP). VALIDATION-ONLY service — NOT credit repair, NOT consolidation, NOT settlement, and it does NOT reduce debt. Min enrolled debt $8,000; $250 min per account; $275 min monthly payment; up to 48-month term; enrollment fee 50% of enrolled debt. First payment within 30 days, can process in 24 hours. No non-sell states (PR restriction only). Same unacceptable banks as CS. The 2-phase process: strategic default (client's own choice — reps may NOT tell a client to stop paying) then validation demand on third-party collectors. Outcomes are NOT guaranteed. Ages 75+ need the welcome-call disclosure. Possible 1099-C tax consequence on forgiven debt. After QC prep, warm-transfer the client to 855-215-8856 for the MLS Welcome Call (do NOT have MLS call the client back).`,
+ tabs:{
+  overview:{label:"Overview", html:`
+   <div class="eyebrow">Start Here</div>
+   <div class="lead">What Momen Legal is — validation only</div>
+   <p class="sub">MLS provides debt-validation services and nothing else. The warmdown call has the client confirm it's not credit repair, not consolidation, and not settlement — your pitch must say the same.</p>
+   <div class="metrics">
+     <div class="metric"><div class="v">$8,000</div><div class="k">Min. enrolled debt</div></div>
+     <div class="metric"><div class="v">$275</div><div class="k">Min. monthly payment</div></div>
+     <div class="metric"><div class="v">48 mo</div><div class="k">Max term</div></div>
+     <div class="metric"><div class="v">50%</div><div class="k">Enrollment fee of debt</div></div>
+   </div>
+   <div class="grid2">
+     <div class="card"><h3>The program IS</h3>
+       <ul class="clean"><li>An attorney-backed debt-<b>validation</b> service</li><li>A process to challenge collectors to prove the debt is valid</li><li>Roughly 18–24 months of payments; service continues until SOL or the debt is deemed uncollectable</li></ul></div>
+     <div class="card"><h3>The program IS NOT</h3>
+       <span class="pill no">Not credit repair</span><span class="pill no">Not a consolidation loan</span><span class="pill no">Not debt settlement</span><span class="pill no">Does not reduce debt</span><span class="pill no">Not a guarantee of removal</span></div>
+   </div>
+   <div class="note warn"><span class="h">Two honesty rules unique to MLS</span> Reps may <b>not</b> tell a client to stop paying creditors — strategic default has to be the client's own choice. And the "never failed to validate" claim is out: collectors <i>often</i> fail to validate when properly challenged, but outcomes vary and aren't guaranteed.</div>`},
+
+  eligibility:{label:"Eligibility & Debt", html:`
+   <div class="eyebrow">Qualification</div>
+   <div class="lead">Eligibility & debt rules</div>
+   <div class="card"><h3>Debt qualifications</h3>
+     <ul class="clean">
+       <li><b>$8,000</b> minimum total enrolled debt · <b>$250</b> minimum per account · <b>$275</b> minimum monthly payment</li>
+       <li>First payment within <b>30 days</b> — can process in as little as <b>24 hours</b></li>
+       <li>Term up to <b>48 months</b>; enrollment fee is <b>50% of enrolled debt</b></li>
+       <li>Debts may be current, 30+ days default, charged-off, or in collections</li>
+       <li>Ages <b>75+</b> require the welcome-call disclosure; required line: "Can you confirm you are solely responsible for your own financial decisions and do not require assistance?"</li>
+     </ul></div>
+   <div class="grid2">
+     <div class="card"><h3>Eligible debts (unsecured)</h3>
+       <ul class="clean"><li>Credit cards, private student loans, medical bills</li><li>Personal loans (WebBank, SoFi, Prosper…) — see private-loan rules</li><li>Payday / peer-to-peer loans — see private-loan rules</li><li>Credit unions only if no active account there (or willing to switch)</li><li>Discover must be <b>under 35%</b> of total debt</li><li>Secured only if small non-repossessable household items (noted, client understands risk)</li><li>Repossessions: 6+ months past due, or sold-at-auction paperwork</li></ul></div>
+     <div class="card"><h3>Ineligible debts</h3>
+       <ul class="clean"><li>Federal/State student loans · child support · taxes</li><li>Utility/HOA/timeshare/rent/gas/electric</li><li>Accounts in litigation or default judgment</li><li>Active third-party settlement in place</li><li>Military cards (e.g. Military Star)</li><li>Mariner Finance · Republic Bank · Tower Loan · Goodleap · Lendmark</li></ul></div>
+   </div>
+   <div class="note ok"><span class="h">Non-sell states</span> None for MLS — nationwide enrollment. Only the PR restriction applies. Unacceptable banks: same list as Consumer Shield.</div>
+   <div class="card"><h3>Private / online loan rules</h3>
+     <p class="body">Full amortization schedule required (rate, finance charge, amount financed, Total of Payments). Client must have made at least one payment (no-payment accounts are litigation/fraud risks). Enrolled balance can be reduced by what's already paid; proof of payments required.</p>
+     <p class="body"><b>Example:</b> $10,000 balance − $1,000 paid = <b>$9,000 enrolled.</b> No documentation → debt is not added.</p></div>`},
+
+  script:{label:"MLS Script", html:`
+   <div class="eyebrow">Approved Framework <span class="rewritebadge">Compliance-rewritten</span></div>
+   <div class="lead">MLS validation script</div>
+   <p class="sub">MLS's script was already close — the main fix is removing the "never once failed" near-guarantee and the "aim for the highest payment / drop close" framing. Keep the careful "we won't tell you to stop paying" language; it's correct.</p>
+
+   <div class="card"><h3><span class="n">1</span>Intro</h3>
+     <div class="step"><div class="coach">"This is [name] on a recorded line — who do I have the pleasure of speaking with? I see you're looking for help with your debt — tell me about your situation." Stay quiet and listen for hot buttons.</div></div></div>
+
+   <div class="card"><h3><span class="n">2</span>Qualify</h3>
+     <div class="step"><div class="coach">Approx. unsecured debt? · making payments or behind/collections? (if collections, ask about lawsuits/summons — litigation debts may not qualify) · total monthly payment · interest rate (est. 24.99% if unknown) · how long paying · working / income · financial goals (hot buttons).</div></div></div>
+
+   <div class="card"><h3><span class="n">3</span>Pitch &amp; pull credit</h3>
+     <div class="step"><div class="coach">Verify name (legal, not nickname), address, email, DOB, SSN. "I'll do a soft pull on your credit to see what's going on." Review balances/creditors, then complete a budget.</div></div>
+     <div class="step"><div class="lbl">Set a sustainable payment</div>
+       <div class="coach">Set a monthly payment the client can realistically sustain — affordability protects retention. Don't push the maximum just to leave room for a "drop close."</div></div></div>
+
+   <div class="card"><h3><span class="n">4</span>What debt validation is</h3>
+     <div class="step key"><div class="say">"With Debt Validation you pay approximately 50% of your current debt amount as program fees, with no interest. Payments typically complete in 18–24 months, and MLS continues to service the file until collection activity stops or the statute of limitations expires."</div></div>
+     <div class="step key"><div class="say">"Validation enforces your rights under the FDCPA. When a collector can't properly validate a debt, it can become unenforceable. I want to be clear, though — outcomes vary by case and aren't guaranteed on any specific account."</div></div></div>
+
+   <div class="card"><h3><span class="n">5</span>The two-phase process</h3>
+     <div class="step key"><div class="lbl">Phase 1 — Strategic default (client's choice)</div>
+       <div class="say">"Creditors look for one thing: no payment activity. <b>We will not tell you to stop paying</b> — that has to be your own decision for validation to work. When there's no activity for ~4–6 months, debts are typically charged off and sent to a third-party collector. Because MLS is attorney-backed, they also send cease-and-desist letters to reduce contact."</div></div>
+     <div class="step key"><div class="lbl">Required risk disclosure</div>
+       <div class="say">"I have to be honest about the risk: choosing not to pay will hurt your credit, creditors may keep contacting you, and they could pursue collection or sue. If a debt can't be invalidated, you'd still have options to address it directly."</div></div>
+     <div class="step"><div class="lbl">Phase 2 — Charge-off &amp; validation</div>
+       <div class="coach">When the account transfers to a third-party collector, send the collection letter to MLS right away. MLS issues a Notice of Demand for Validation — the burden of proof is on the collector. Collectors <i>frequently</i> fail to fully validate when properly challenged, but it's not guaranteed.</div></div></div>
+
+   <div class="card"><h3><span class="n">6</span>Value prop &amp; close</h3>
+     <div class="step"><div class="coach">Company credentials (experience, BBB rating) — state only what's accurate and current. Set the first payment ASAP (within ~7 days; approval needed past 10 business days). Auto-draft from checking/savings; verify routing, account, name on account, billing address. Send the clixsign agreement; walk through consent, signature/initials, highlighted fields.</div></div></div>`},
+
+  qa:{label:"MLS Warmdown", html:`
+   <div class="eyebrow">QC Prep &amp; Welcome Call</div>
+   <div class="lead">MLS warmdown</div>
+   <p class="sub">Do not skip — QC prep must be done before the transfer. After prep, <b>warm-transfer the client to 855-215-8856 for the MLS Welcome Call</b>. These six confirmations are strong, honest disclosures; keep them intact.</p>
+   <div class="card"><h3>QC prep</h3>
+     <div class="step"><div class="coach">Have the client write down your direct line so they know who took care of them today. Let them know you'll <b>warm-transfer them to the MLS Welcome Call line (855-215-8856)</b> in a few minutes for a 5–10 minute call. Then review the six questions.</div></div></div>
+   <div class="card"><h3>Six compliance questions</h3>
+     <ul class="qa">
+       <li>Monthly payments go to MLS as fees for the validation program — MLS does <b>not</b> use them to pay your creditors. Understand?</li>
+       <li>By choosing not to pay your creditors, your credit will be impacted negatively and you may have derogatory items. Understand?</li>
+       <li>MLS only offers debt-validation — it is <b>not</b> credit repair, a consolidation loan, or debt settlement. Understand?</li>
+       <li>You may receive a 1099-C on any enrolled debt that is forgiven/dismissed. Understand?</li>
+       <li>Participating may impact your relationship with creditors — they may close/restrict other accounts you hold with them, at their sole discretion. Understand and wish to proceed?</li>
+       <li>Defaulting can lead to escalated collection activity and/or lawsuits. If we're unable to invalidate the debts, other options may be available. Understand?</li>
+     </ul></div>
+   <div class="note ok"><span class="h">After the six questions</span> Warm-transfer the client to <b>855-215-8856</b> for the MLS Welcome Call and stay on the line until the handoff is complete. Client must send a voided check or banking screenshot (now or within 7 days).</div>`},
+
+  compliance:{label:"Compliance", html:`
+   <div class="eyebrow">Conduct &amp; Hard Rules</div>
+   <div class="lead">MLS compliance essentials</div>
+   <div class="card"><h3>The lines you hold</h3>
+     <ul class="clean">
+       <li>Never tell a client to stop paying creditors — strategic default is their choice</li>
+       <li>Never guarantee a debt will be invalidated or removed</li>
+       <li>Always disclose: credit impact, possible lawsuits, 1099-C tax consequence, that MLS doesn't pay creditors and doesn't reduce debt</li>
+       <li>Recorded line; verify litigation status (summons/judgment debts may not qualify)</li>
+       <li>Ages 75+ require the welcome-call disclosure</li>
+     </ul></div>
+   <div class="note no"><span class="h">Documentation</span> Private/online loans need the full amortization schedule and proof of at least one payment, or the debt cannot be added. No documentation = not enrolled.</div>`},
+ }
+},
+
+/* ---------------- RESPRO ---------------- */
+respro:{
+ name:"Resolution Processing", seal:"RP", sub:"ResPro · Forth CRM · Debt Resolution",
+ accent:"#7a5a2a", accent2:"#b08a4a",
+ coachfacts:`BACKEND: Resolution Processing (ResPro). CRM: Forth. A structured 20–24 month debt-RESOLUTION & advocacy program for unsecured consumer debt — NOT guaranteed elimination, NOT credit repair, NOT validation-only, NOT a settlement guarantee, NOT a promise of credit-score improvement. Eligibility: verifiable income; min $8,000 debt; min $250/mo; age 21–85 (no one over 85); 24-month commitment; full comprehension. Debit/ACH only. Hot transfer mandatory (no hot transfer = no enrollment). $1,000 summons fee if pre-existing summons or served within 30 days. Clawback until two payments clear. Credit-pull ratio target 7:1, $7.50/pull over 10:1. Don't name ResPro until after qualification and after explaining the credit pull.`,
+ tabs:{
+  overview:{label:"Overview", html:`
+   <div class="eyebrow">Start Here</div>
+   <div class="lead">What ResPro is</div>
+   <p class="sub">A structured debt-resolution and advocacy program. ResPro's own handbook bars guarantees and requires honest risk disclosure — this is the cleanest of the three backends.</p>
+   <div class="metrics">
+     <div class="metric"><div class="v">20–24</div><div class="k">Month program</div></div>
+     <div class="metric"><div class="v">$8,000</div><div class="k">Min. debt</div></div>
+     <div class="metric"><div class="v">$250</div><div class="k">Min. monthly</div></div>
+     <div class="metric"><div class="v">21–85</div><div class="k">Eligible age</div></div>
+   </div>
+   <div class="grid2">
+     <div class="card"><h3>The program IS</h3>
+       <ul class="clean"><li>Structured debt resolution &amp; advocacy</li><li>A 24-month process for unsecured consumer debt</li><li>Supported by admin work, legal coordination, correspondence management</li><li>Anchored by consumer-advocate attorneys</li></ul></div>
+     <div class="card"><h3>The program IS NOT</h3>
+       <span class="pill no">Not guaranteed elimination</span><span class="pill no">Not credit repair</span><span class="pill no">Not validation-only</span><span class="pill no">Not a settlement guarantee</span><span class="pill no">Not a score-improvement promise</span></div>
+   </div>
+   <div class="note no"><span class="h">Never</span> claim to work for ResPro · market yourself as ResPro · guarantee outcomes, timelines, or legal results.</div>
+   <div class="note ok"><span class="h">Welcome Call transfer number</span> Warm-transfer every enrolling client to <b>844-593-7936</b> for the ResPro Welcome Call — no hot transfer = no enrollment.</div>`},
+
+  eligibility:{label:"Eligibility & Debt", html:`
+   <div class="eyebrow">Qualification</div>
+   <div class="lead">Who & what qualifies</div>
+   <div class="card"><h3>Required eligibility — all must be true</h3>
+     <ul class="clean"><li>Verifiable income · min $8,000 eligible debt · min $250/mo payment</li><li>Age 21–85 (no exceptions, no one over 85)</li><li>24-month commitment · full comprehension</li></ul></div>
+   <div class="grid2">
+     <div class="card"><h3>Generally eligible</h3><span class="pill ok">Credit cards</span><span class="pill ok">Unsecured personal loans</span><span class="pill ok">Collections</span><span class="pill ok">Medical (3rd-party collections)</span></div>
+     <div class="card"><h3>Prohibited</h3><span class="pill no">Mortgages / autos</span><span class="pill no">Government debt</span><span class="pill no">Student loans (original creditor)</span><span class="pill no">Business / EIN</span><span class="pill no">Tribal</span><span class="pill no">Home-improvement (GreenSky, Mariner, BMO)</span></div>
+   </div>
+   <div class="note no"><span class="h">$1,000 summons fee</span> Applies if a client has a pre-existing summons at enrollment or is served within 30 days — disclose it on the call.</div>`},
+
+  script:{label:"RP Script", html:`
+   <div class="eyebrow">Approved Script · 022025</div>
+   <div class="lead">RP Debt Resolution — application &amp; enrollment</div>
+   <p class="sub">The approved ResPro enrollment script. Cover every element in order; never skip the highlighted disclosures to speed a close. Live transfers start at the intro.</p>
+
+   <div class="card"><h3><span class="n">1</span>Intro — greet &amp; align with purpose</h3>
+     <div class="step"><div class="say">"This is ___ with ___ on a recorded line. I understand you have some credit cards or other debts you'd like to pay off quicker — is that correct?"</div>
+       <div class="coach">"Okay, I can help with that. What type of accounts do you have — credit cards, loans, medical, collection accounts?"</div></div>
+     <div class="step"><div class="lbl">Prequalifying questions (if needed)</div><div class="coach">How much debt do you owe? · Employed / source of income? · What state do you live in?</div></div></div>
+
+   <div class="card"><h3><span class="n">2</span>Set expectations early</h3>
+     <div class="step key"><div class="say">"For now I'll go through a few basic questions, and if we CAN provide something more affordable that truly makes sense for you, I'll explain all the details — and if you feel comfortable, we'll take the next steps. Fair enough?"</div></div></div>
+
+   <div class="card"><h3><span class="n">3</span>Employment &amp; income · build rapport</h3>
+     <div class="step"><div class="coach">Is all the debt in your name or joint? · Married or single? · Type of work? (if retired, what before?) · How long? · Monthly take-home after taxes? · Any other income or contributors?</div></div></div>
+
+   <div class="card"><h3><span class="n">4</span>Discovery — identify the problem</h3>
+     <div class="step"><div class="coach">What led to accumulating this debt — did something happen? · Any income changes/setbacks during or after Covid? · Current status — minimum payments, a little behind, or unable to pay?</div></div>
+     <div class="step"><div class="lbl">Recap / confirm the problem</div>
+       <div class="say">"So in short, it sounds like these cards and loans have gotten really difficult to pay off, and the high interest and payments are making it hard to get ahead — does that sound right?"</div></div>
+     <div class="step"><div class="coach">"We are definitely headed in the right direction so far. There are millions of good people in this situation right now — you're not alone."</div></div></div>
+
+   <div class="card"><h3><span class="n">5</span>Transition to the credit pull</h3>
+     <div class="note no" style="margin-top:0"><span class="h">Read the authorization plainly</span> Do not rush or downplay it. Get a clear, informed yes before pulling.</div>
+     <div class="step key"><div class="lbl">Soft pull</div>
+       <div class="say">"For compliance, we need accurate numbers before you make any decisions. I'll do a soft pull on your credit, which won't have any effect on your score. I'll need your date of birth and your social for the soft pull."</div></div>
+     <div class="step key"><div class="lbl">FCRA authorization — read it</div>
+       <div class="say">"You understand and agree you're providing instructions to Credit One Reporting under the Fair Credit Reporting Act to access information from your personal credit profile from Experian, solely to conduct a prequalification for credit. Do you authorize this? And is your credit report frozen for any reason?"</div></div>
+     <div class="step key"><div class="lbl">Confirm &amp; consent</div>
+       <div class="say">"Let me confirm the full spelling of your name and your home address. By verbally agreeing and proceeding, we'll initiate a soft pull of your credit report, and this will not affect your credit score. Do you agree? If yes, please press the # key now."</div></div></div>
+
+   <div class="card"><h3><span class="n">6</span>Credit review &amp; interest wasted</h3>
+     <div class="step"><div class="coach">Confirm each account: creditors, balances, minimum payments. Total current debt; total monthly payments (× 6 or 12 to show what they've paid). "If you keep doing what you're doing, it'd take about ___ months to pay off, plus an extra $___ in interest. What other options have you tried?" <i>(Don't over-educate or compare programs here.)</i></div></div></div>
+
+   <div class="card"><h3><span class="n">7</span>Budget &amp; expense summary</h3>
+     <div class="step"><div class="coach">"We'll complete a quick budget so we get you an affordable payment — not something that puts you right back in the same situation." Anyone else helping with expenses? · Saving anything at month-end? · Anything in savings? · Any major purchases in the next 1–2 years that could overextend you?</div></div></div>
+
+   <div class="card"><h3><span class="n">8</span>Acknowledge hardship — verbal confirmation</h3>
+     <div class="step key"><div class="say">"Do you confirm that the terms, interest rates, and conditions given to you have had a negative impact on your financial well-being and your ability to pay these accounts off?" <i>(Yes or No.)</i></div></div>
+     <div class="step"><div class="coach">"Thank you for your honesty. I'm going to put you on a brief hold and submit our request for more affordable options — stay on the line, I'll be back in 1–3 minutes." <b>Go on hold 1–3 min; prepare terms, notes, facts.</b></div></div></div>
+
+   <div class="card"><h3><span class="n">9</span>Approval &amp; the two main goals</h3>
+     <div class="step"><div class="say">"[Name], are you ready? We were able to get you approved for one of the best debt-resolution plans — I'll go over the main details now."</div></div>
+     <div class="step"><div class="lbl">Two goals (reduce resistance)</div>
+       <div class="coach">1) It has to save you significant time, money and/or interest. · 2) It needs to support your ability to apply for credit in the future. <i>Framed as conditions of moving forward — not a promise of a result.</i></div></div></div>
+
+   <div class="card"><h3><span class="n">10</span>Terms &amp; benefits</h3>
+     <div class="step"><div class="say">"Your existing monthly payments come to $___/mo with an estimated ___ months to pay off. Your new plan payment is $___/mo over ___ months."</div>
+       <div class="coach">"This structure helps you take back control instead of depending on high-interest credit. You've paid far more in interest than you've saved — this month you start getting back in control."</div></div></div>
+
+   <div class="card"><h3><span class="n">11</span>The debt-resolution process</h3>
+     <div class="step"><div class="coach">"You're a candidate for Debt Resolution. Your case is assigned to our partner, Resolution Processing — a consumer-advocacy firm that's helped thousands in similar situations. You'll be introduced to them today for a quick 5-minute intro call. They begin by sending cease-and-desist letters to stop harassing collector calls."</div></div>
+     <div class="step key"><div class="lbl">Positive impact — say it as a goal</div>
+       <div class="say">"There are two goals here: (1) the goal is to get accounts removed from your credit so they don't impact future financing and improve your ratios; and (2) save you thousands you'd have paid in interest and fees."</div></div></div>
+
+   <div class="card"><h3><span class="n">12</span>What ResPro does — summary</h3>
+     <ul class="clean">
+       <li>The resolution process takes ~24 months — shorter than the typical industry program</li>
+       <li>After cease-and-desist letters, they prepare legal letters, notices, and requests to challenge the validity of each enrolled debt</li>
+       <li>They monitor all creditor communication, holding them to legal codes and response timelines — significant updates in the first 6 months</li>
+       <li>Their legal/administrative processes work to remove accounts and any unfair or illegal items from the report</li>
+       <li>Fully transparent — monthly communication, online portal, document upload/view, educational videos, and a direct line to call anytime</li>
+     </ul></div>
+
+   <div class="card"><h3><span class="n">13</span>Right to retain an attorney</h3>
+     <div class="step"><div class="coach">"If a creditor or collector ever sends a summons or takes legal action, you'll be protected by an experienced attorney. And when collectors break the law, you can sometimes file suit against them."</div></div>
+     <div class="step"><div class="coach">Two options: (1) choose an attorney in the Resolution Processing network at <b>no cost to you</b>, or (2) use your own attorney at your cost. Your choice.</div></div>
+     <div class="note no"><span class="h">Pre-existing summons</span> If a summons already exists and the client chooses a network attorney, a <b>$1,000 fee</b> applies — disclose it.</div></div>
+
+   <div class="card"><h3><span class="n">14</span>Credit impact — required honesty</h3>
+     <div class="step key"><div class="say">"Lenders right now see high balances and a high debt-to-income ratio. Those are the two things that begin to improve as we remove or resolve accounts. While going through the process your credit score may drop due to missed payments, especially early on."</div></div>
+     <div class="step"><div class="coach">"This is only temporary and works far quicker than what you're doing now. In many cases people can reapply with the same creditors afterward."</div></div></div>
+
+   <div class="card"><h3><span class="n">15</span>If the debt isn't removed</h3>
+     <div class="step key"><div class="say">"If any accounts aren't resolved through this program, you have the right to work directly with the creditor or a settlement company of your choice. And if you make 18 on-time payments, Resolution Processing has partners who may qualify you for a loan to pay everything off in one lump sum."</div>
+       <div class="coach">Do not omit this — it's the honest contingency.</div></div></div>
+
+   <div class="card"><h3><span class="n">16</span>Begin enrollment &amp; payment info</h3>
+     <div class="step"><div class="coach">"This process moves fairly quickly — 24 months — compared to the years you'd otherwise keep paying." Use the same checking account they pay from; collect and confirm account info. <b>Nothing is paid today.</b></div></div>
+     <div class="step"><div class="lbl">Chirp option</div>
+       <div class="coach">"We can save you another $50 if you set up automatic payments with the Chirp system — it sends reminders and makes payments easier. Want the link by text or email?" The same link completes the agreement, Chirp, and signatures.</div></div></div>
+
+   <div class="card"><h3><span class="n">17</span>Hot transfer to ResPro onboarding</h3>
+     <div class="step"><div class="say">"We're all done here. I'd like to introduce you to the ResPro team now — they'll chat for about 5 minutes to give you peace of mind, cover the basics, make sure you have portal access, and set your Welcome &amp; Success Track call. It's been a pleasure — hang on while I get them on the line."</div></div>
+     <div class="step key"><div class="lbl">Welcome Call transfer — mandatory</div>
+       <div class="say">"Hi [ResPro agent], this is ___ — I'd like to introduce you to [client] to review and set up their Welcome Call."</div>
+       <div class="coach"><b>Warm-transfer number: 844-593-7936.</b> Stay on to introduce the client. <b>No hot transfer = no enrollment.</b></div></div></div>`},
+
+  checklist:{label:"Submission", html:`
+   <div class="eyebrow">Before You Submit in Forth</div>
+   <div class="lead">"Do not submit unless…"</div>
+   <p class="sub">Files missing any of these are returned without exception.</p>
+   <div class="card"><h3>Hard stops</h3>
+     <ul class="clean">
+       <li>DOB &amp; SSN match across CSA, Forth, and credit report (mind the 85 cutoff)</li>
+       <li>Physical address only — no PO boxes</li>
+       <li>CSA &amp; Forth match exactly (email, amounts, dates, creditor names, account numbers)</li>
+       <li>Hot transfer completed &amp; noted — no hot transfer, no enrollment</li>
+       <li>Debit/ACH only; first payment 3–30 business days out</li>
+       <li>ASDE signed for every secured debt; both signatures on joint debts</li>
+       <li>Required statements uploaded; prohibited debt removed</li>
+       <li>Not bankrupt, not over age limit, not on the professional litigator / DNC list</li>
+     </ul></div>`},
+
+  compliance:{label:"Compliance", html:`
+   <div class="eyebrow">Conduct &amp; Standards</div>
+   <div class="lead">Staying inside the lines</div>
+   <div class="card"><h3>The four required disclosures</h3>
+     <ul class="clean"><li>The program does not eliminate debt overnight</li><li>Creditors may keep calling</li><li>Results take time</li><li>Consistent monthly payments are required</li></ul>
+     <p class="body" style="margin-top:8px">Then ask: "Do you feel clear on how this program works?"</p></div>
+   <div class="grid2">
+     <div class="card"><h3>Credit pull ratio</h3><span class="pill ok">Target 7:1</span><span class="pill warn">Max 10:1</span><span class="pill no">$7.50/pull over</span><p class="body" style="margin-top:8px">Pull credit as the final step of qualification, not discovery.</p></div>
+     <div class="card"><h3>Clawback</h3><p class="body">Files are clawback-exposed until <b>two full payments</b> clear, then graduate. A return unresolved 21 days cancels the file.</p></div>
+   </div>
+   <div class="note warn"><span class="h">Never valid excuses</span> "I didn't see the update" · "my team read it differently" · "we were helping the client" · "others allow it." Newsletters are binding; the stricter standard always wins.</div>`},
+ }
+}
+};
+
+/* =========================================================
+   RENDER
+   ========================================================= */
+let current="cs", currentTab=null;
+const seal=document.getElementById('seal'), brandsub=document.getElementById('brandsub'),
+      nav=document.getElementById('nav'), main=document.getElementById('main'), bsel=document.getElementById('bsel');
+
+function setTheme(b){
+  document.documentElement.style.setProperty('--accent',B[b].accent);
+  document.documentElement.style.setProperty('--accent2',B[b].accent2);
+  seal.textContent=B[b].seal; brandsub.textContent=B[b].sub;
+}
+function renderTabs(){
+  const tabs=B[current].tabs, keys=Object.keys(tabs);
+  if(!currentTab||(currentTab!=='__coach'&&!tabs[currentTab]))currentTab=keys[0];
+  nav.innerHTML='';
+  keys.forEach(k=>{
+    const btn=document.createElement('button');
+    btn.className='tab'+(k===currentTab?' active':'');
+    btn.textContent=tabs[k].label;
+    btn.onclick=()=>{currentTab=k;renderTabs();renderPanel();window.scrollTo({top:0,behavior:'smooth'});};
+    nav.appendChild(btn);
+  });
+  const c=document.createElement('button');
+  c.className='tab'+(currentTab==='__coach'?' active':'');
+  c.textContent='AI Coach';
+  c.onclick=()=>{currentTab='__coach';renderTabs();renderPanel();window.scrollTo({top:0,behavior:'smooth'});};
+  nav.appendChild(c);
+}
+function renderPanel(){
+  if(currentTab==='__coach'){renderCoach();return;}
+  main.innerHTML=B[current].tabs[currentTab].html;
+}
+function selectBackend(b){
+  current=b; currentTab=null;
+  [...bsel.children].forEach(x=>x.classList.toggle('on',x.dataset.b===b));
+  setTheme(b); renderTabs(); renderPanel(); window.scrollTo({top:0,behavior:'smooth'});
+}
+[...bsel.children].forEach(x=>x.onclick=()=>selectBackend(x.dataset.b));
+
+/* =========================================================
+   AI COACH (backend-aware)
+   ========================================================= */
+let history=[];
+function renderCoach(){
+  main.innerHTML=`
+   <div class="eyebrow">Practice Anytime · ${B[current].name}</div>
+   <div class="lead">AI Coach</div>
+   <p class="sub">Quiz, roleplay objections, or ask anything about <b>${B[current].name}</b>. The Coach is locked to honest, no-guarantee positioning — it will not let you rehearse a guaranteed removal, a promised score, or a downplayed disclosure.</p>
+   <div class="coachcfg">Set <code>PROXY_ENDPOINT</code> near the bottom of this file to your Cloudflare Worker URL, then host the file. It won't connect from a local <code>file://</code> open or the in-chat preview.</div>
+   <div id="chat">
+     <div id="log"><div class="msg bot">Coaching on <b>${B[current].name}</b>. Want to <b>quiz</b> on eligibility, <b>roleplay</b> an objection, or drill the <b>required disclosures</b>?</div></div>
+     <div class="quickrow">
+       <button class="quick" data-q="Quiz me on ${B[current].name} eligibility, one question at a time.">Quiz: eligibility</button>
+       <button class="quick" data-q="Roleplay a client asking 'will this remove my debt for sure?' and grade my answer for ${B[current].name}.">Roleplay: guarantee trap</button>
+       <button class="quick" data-q="List the required risk disclosures for ${B[current].name} and quiz me on them.">Drill: disclosures</button>
+     </div>
+     <div class="inputrow"><textarea id="q" rows="1" placeholder="Ask the coach…"></textarea><button id="send">Send</button></div>
+   </div>`;
+  history=[];
+  const qEl=document.getElementById('q'), sendBtn=document.getElementById('send');
+  document.querySelectorAll('.quick').forEach(b=>b.onclick=()=>{qEl.value=b.dataset.q;ask();});
+  sendBtn.onclick=ask;
+  qEl.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();ask();}});
+  qEl.addEventListener('input',()=>{qEl.style.height='auto';qEl.style.height=Math.min(qEl.scrollHeight,120)+'px';});
+}
+function addMsg(role,text){
+  const log=document.getElementById('log'); if(!log)return;
+  const d=document.createElement('div');
+  d.className='msg '+(role==='user'?'me':'bot');
+  d.innerHTML=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
+  log.appendChild(d); log.scrollTop=log.scrollHeight;
+}
+async function ask(){
+  const qEl=document.getElementById('q'), sendBtn=document.getElementById('send'), log=document.getElementById('log');
+  const text=qEl.value.trim(); if(!text)return;
+  addMsg('user',text); history.push({role:'user',content:text});
+  qEl.value='';qEl.style.height='auto';sendBtn.disabled=true;
+  const tip=document.createElement('div');tip.className='typing';tip.textContent='Coach is thinking…';log.appendChild(tip);log.scrollTop=log.scrollHeight;
+  const system=`You are the Lift Lending DV training coach for the ${B[current].name} backend. Be warm, sharp, concise. Quiz, roleplay clients, and grade answers using ONLY this backend's material.\n\n${GUARDRAILS}\n\n${B[current].coachfacts}\n\nKeep answers short. Quiz one question at a time. When grading a roleplay, flag any guarantee, score promise, downplay, or missing disclosure and give the compliant version.`;
+  try{
+    const res=await fetch(PROXY_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:MODEL,max_tokens:1000,system,messages:history})});
+    const data=await res.json(); tip.remove();
+    const reply=(data.content||[]).filter(c=>c.type==='text').map(c=>c.text).join('\n').trim()
+      ||'(No response — check that PROXY_ENDPOINT is set and the worker is deployed.)';
+    addMsg('assistant',reply); history.push({role:'assistant',content:reply});
+  }catch(e){ tip.remove(); addMsg('assistant','Connection error. Host the file (not a local open) and confirm PROXY_ENDPOINT points to your live Cloudflare Worker.'); }
+  finally{ sendBtn.disabled=false; qEl.focus(); }
+}
+
+/* init */
+setTheme('cs'); renderTabs(); renderPanel();
+</script>
+</body>
+</html>
